@@ -24,6 +24,10 @@ scalacOptions := {
   "-encoding", "UTF-8"
 )
 
+libraryDependencies ++= Seq(
+  "org.scalatest" %% "scalatest" % "2.2.1" % "test"
+)
+
 // disable compilation of ScalaDocs, since this always breaks on links and isn't as helpful as source
 sources in(Compile, doc) := Seq.empty
 
