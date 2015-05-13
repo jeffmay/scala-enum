@@ -3,7 +3,7 @@ name := "scala-enum"
 
 organization := "me.jeffmay"
 
-version := "1.0.0"
+version := "1.0.1"
 
 crossScalaVersions := Seq("2.11.6", "2.10.4")
 

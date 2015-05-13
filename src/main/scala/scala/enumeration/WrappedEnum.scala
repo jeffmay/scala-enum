@@ -24,9 +24,12 @@ class WrappedEnum(val enum: scala.Enumeration) extends AnyVal with Enumeration {
     throw new MatchError(s"No Value instance with name '$name'")
   }
 
+  override def isDefinedAt(name: String): Boolean = all.exists(nameOf(_) == name)
+
   override def apply(name: String): ValueType = findValueOrThrow(name)
 
   override def unapply(name: String): Option[ValueType] = findValue(name)
+
 }
 
 trait ImplicitlyWrapEnum {

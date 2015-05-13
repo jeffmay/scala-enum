@@ -51,6 +51,13 @@ trait Enumeration extends Any {
   def findValueOrThrow(name: String): ValueType
 
   /**
+   * Determines if a specific String is defined within the Enum
+   * @param name the unique name of the enumeration value
+   * @return A boolean representing whether the specified name is defined in the enum
+   */
+  def isDefinedAt(name: String): Boolean
+
+  /**
    * Unapply method to allow for easy extraction / case class comparison
    * @param name the unique name of the enumeration value
    * @return An Option containing the associated value if it exists
