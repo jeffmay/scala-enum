@@ -1,6 +1,7 @@
 package scala.enumeration
 
 import scala.language.implicitConversions
+import scala.reflect.ClassTag
 
 /**
  * An implementation of [[Enumeration]] that
@@ -15,9 +16,9 @@ abstract class ValueEnum extends AbstractEnumeration {
   // final since Value's name is the only safe way to get the unique name
   @inline final override implicit def nameOf(value: ValueType): String = value.toString
 
-  override protected val className: String = "Value"
-
   override def all: Set[ValueType] = values
+
+  override def enumValueTypeName: String = "Value"
 
   override protected def value(name: String): ValueType = Value(name)
 }
@@ -35,12 +36,17 @@ abstract class TypedEnum extends AbstractEnumeration {
   /**
    * The name of the [[ValueType]] class for error messaging.
    *
-   * A good default implementation could be:
-   * {{{
-   *   scala.reflect.classTag[ValueType].runtimeClass.getName
-   * }}}
+   * A good default implementation is [[defaultEnumValueTypeName]]
    */
-  protected def className: String
+  override def enumValueTypeName: String
+
+  /**
+   * A helper method for setting [[enumValueTypeName]].
+   */
+  protected def defaultEnumValueTypeName(implicit tag: ClassTag[ValueType]): String = {
+    val full = tag.runtimeClass.getName
+    full.substring(full.lastIndexOf("$"), full.length)
+  }
 
   /**
    * A method to allow the enumeration to override the default method
@@ -61,9 +67,9 @@ private[enumeration] abstract class AbstractEnumeration extends scala.Enumeratio
 
   private[this] lazy val lookup: Map[String, ValueType] = all.map(v => (nameOf(v), v)).toMap
 
-  protected def value(name: String): ValueType
+  override lazy val enumName: String = Enumeration.defaultEnumName(this)
 
-  protected def className: String
+  protected def value(name: String): ValueType
 
   @inline final override def findValue(name: String): Option[ValueType] = lookup get name
 
@@ -72,7 +78,7 @@ private[enumeration] abstract class AbstractEnumeration extends scala.Enumeratio
 
   // Not final to allow overriding the error message
   override def findValueOrThrow(name: String): ValueType =
-    findValueOrElse(name, throw new MatchError(s"No $className instance with name '$name'"))
+    findValueOrElse(name, throw new MatchError(s"No $enumValueTypeName instance with name '$name'"))
 
   override def unapply(name: String): Option[ValueType] = findValue(name)
 

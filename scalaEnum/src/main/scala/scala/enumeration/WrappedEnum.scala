@@ -12,6 +12,10 @@ class WrappedEnum(val enum: scala.Enumeration) extends AnyVal with Enumeration {
 
   override type ValueType = enum.Value
 
+  override def enumName: String = Enumeration.defaultEnumName(enum)
+
+  override def enumValueTypeName: String = Enumeration.defaultEnumName(enum) + ".Value"
+
   override implicit def nameOf(value: ValueType): String = value.toString
 
   override def all: Set[ValueType] = enum.values
