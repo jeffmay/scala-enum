@@ -32,6 +32,27 @@ class EnumSpec extends WordSpec {
     }
   }
 
+  "NestedEnum" should {
+
+    "have an expected enumName in different outer class instances" in {
+      val outer = new OuterClass
+      assert(outer.NestedEnum.enumName == "scala.enumeration.OuterClass.NestedEnum")
+    }
+
+    "have an expected enumValueTypeName in different outer class instances" in {
+      val outer = new OuterClass
+      assert(outer.NestedEnum.enumValueTypeName == "scala.enumeration.OuterClass.NestedEnum.Value")
+    }
+
+    "have an expected enumName for a singleton nested num" in {
+      assert(OuterObject.OtherNestedEnum.enumName == "scala.enumeration.OuterObject.OtherNestedEnum")
+    }
+
+    "have an expected enumValueTypeName for a singleton nested num" in {
+      assert(OuterObject.OtherNestedEnum.enumValueTypeName == "scala.enumeration.OuterObject.OtherNestedEnum.Value")
+    }
+  }
+
 }
 
 object NormalEnum extends scala.Enumeration {
@@ -51,8 +72,22 @@ object PrefixedValueEnum extends ValueEnum {
 object CustomEnum extends TypedEnum {
   override type ValueType = Custom
   case class Custom(name: String) extends Val(name)
-  override protected def className: String = scala.reflect.classTag[ValueType].runtimeClass.getName
+  override lazy val enumValueTypeName: String = defaultEnumValueTypeName
   override protected def value(name: String): ValueType = new Custom(name)
   override implicit def nameOf(value: ValueType): String = value.name
   val One = value("one")
+}
+
+class OuterClass {
+
+  object NestedEnum extends scala.Enumeration {
+    val One = Value("one")
+  }
+}
+
+object OuterObject extends OuterClass {
+
+  object OtherNestedEnum extends scala.Enumeration {
+    val One = Value("one")
+  }
 }

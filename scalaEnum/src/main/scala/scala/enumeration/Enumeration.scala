@@ -23,6 +23,21 @@ trait Enumeration extends Any {
   def all: Set[ValueType]
 
   /**
+   * A helpful name of this Enumeration object for debugging. Typically this is just the class name.
+   *
+   * @note this is not intended to be a unique identifier, since simple names might also be desirable here.
+   */
+  def enumName: String
+
+  /**
+   * A helpful name of the [[ValueType]] class for debugging. Typically this is either a full class name
+   * or a short name relative to this outer [[Enumeration]] object.
+   *
+   * @note this is not intended to be a unique identifier, since simple names might also be desirable here.
+   */
+  def enumValueTypeName: String
+
+  /**
    * Gets the unique name of the enumeration value.
    */
   implicit def nameOf(value: ValueType): String
@@ -66,4 +81,14 @@ trait Enumeration extends Any {
   def apply(name: String): ValueType
 }
 
-object Enumeration extends ImplicitlyWrapEnum
+object Enumeration extends ImplicitlyWrapEnum {
+
+  // A helper method for enumeration names
+  @inline private[enumeration] def defaultEnumName(enum: scala.Enumeration): String = {
+    val className = enum.getClass.getName
+    // and replace all '$'s with '.'s
+    val dottedName = className.replaceAll("""(\.type)*\$""", ".")
+    // remove the trailing $
+    dottedName.substring(0, dottedName.length - 1)
+  }
+}
