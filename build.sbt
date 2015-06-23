@@ -53,6 +53,11 @@ lazy val scalaEnumJson = project in file("scalaEnumJson") settings(common: _*) s
 
   name := "scala-enum-json",
 
+  resolvers ++= Seq(
+    "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/",
+    "jeffmay at bintray" at "https://dl.bintray.com/jeffmay/maven/"
+  ),
+
   libraryDependencies ++= Seq(
     "com.typesafe.play" %% "play-json" % "2.3.7",
     "org.scalacheck" %% "scalacheck" % "1.12.2" % "test",
