@@ -1,3 +1,7 @@
+# Project
+coveralls-token
+
+# Java
 *.class
 *.log
 
