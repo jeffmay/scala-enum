@@ -3,8 +3,9 @@
 <a href='https://travis-ci.org/jeffmay/scala-enum'>
   <img src='https://travis-ci.org/jeffmay/scala-enum.svg' alt='Build Status' />
 </a>
-<a href='https://coveralls.io/github/jeffmay/scala-enum?branch=coveralls'>
-  <img src='https://coveralls.io/repos/jeffmay/scala-enum/badge.svg?branch=coveralls&service=github' alt='Coverage Status' />
+<a href='https://coveralls.io/github/jeffmay/scala-enum?branch=master'>
+  <img src='https://coveralls.io/repos/jeffmay/scala-enum/badge.svg?branch=master&service=github' alt='Coverage Status' />
+</a>
 </a>
 <table>
   <tr>
